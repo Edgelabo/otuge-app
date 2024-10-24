@@ -1,10 +1,10 @@
-'use client'
+"use client";
 
-import { useState } from 'react'
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Loader2 } from "lucide-react"
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Loader2 } from "lucide-react";
 
 type ResultType = {
   personality: {
@@ -22,44 +22,46 @@ type ResultType = {
     symbol: string;
     meaning: string;
   };
-}
+};
 
 export default function Component() {
-  const [name, setName] = useState('')
-  const [result, setResult] = useState<ResultType | null>(null)
-  const [loading, setLoading] = useState(false)
-  const [showResult, setShowResult] = useState(false)
+  const [name, setName] = useState("");
+  const [result, setResult] = useState<ResultType | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [showResult, setShowResult] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setLoading(true)
-    await new Promise(resolve => setTimeout(resolve, 3000))
+    e.preventDefault();
+    setLoading(true);
+    await new Promise((resolve) => setTimeout(resolve, 3000));
     setResult({
       personality: {
-        description: `${name}さん、あなたは生まれながらにリーダーシップを発揮する力を持つ人です。周囲を明るく照らし、困難な状況でも冷静さを保ち、周りの人を鼓舞する存在です。持ち前の明るさと強い意志で、どんな目標も達成できるでしょう。`
+        description: `${name}さん、あなたは生まれながらにリーダーシップを発揮する力を持つ人です。周囲を明るく照らし、困難な状況でも冷静さを保ち、周りの人を鼓舞する存在です。持ち前の明るさと強い意志で、どんな目標も達成できるでしょう。`,
       },
       guardian_deity: {
         name: "天照大神（アマテラスオオミカミ）",
-        description: "あなたの守護神は、太陽神である天照大神です。彼女はあなたに永遠の光と希望を授け、困難な時でも道を照らしてくれるでしょう。彼女はあなたに創造性を育み、周囲に活力を与える力を与えます。"
+        description:
+          "あなたの守護神は、太陽神である天照大神です。彼女はあなたに永遠の光と希望を授け、困難な時でも道を照らしてくれるでしょう。彼女はあなたに創造性を育み、周囲に活力を与える力を与えます。",
       },
       quote: {
-        text: `${name}さんには、『どんな困難も乗り越えられる、その力はあなたの中に存在する』という言葉がふさわしいでしょう。`
+        text: `${name}さんには、『どんな困難も乗り越えられる、その力はあなたの中に存在する』という言葉がふさわしいでしょう。`,
       },
       destiny: {
         color: "金色",
         symbol: "太陽",
-        meaning: "あなたは太陽のように周囲を明るく照らし、人々に希望を与える存在です。あなたの輝かしい未来は、常に金色に輝いています。"
-      }
-    })
-    setLoading(false)
-    setShowResult(true)
-  }
+        meaning:
+          "あなたは太陽のように周囲を明るく照らし、人々に希望を与える存在です。あなたの輝かしい未来は、常に金色に輝いています。",
+      },
+    });
+    setLoading(false);
+    setShowResult(true);
+  };
 
   const resetForm = () => {
-    setName('')
-    setResult(null)
-    setShowResult(false)
-  }
+    setName("");
+    setResult(null);
+    setShowResult(false);
+  };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-red-800 to-red-900">
@@ -68,11 +70,13 @@ export default function Component() {
           <h1 className="text-3xl font-bold text-red-800">神社のお告げ</h1>
           <p className="text-gray-600">あなたの運命をお聞かせします</p>
         </div>
-        
+
         {!showResult ? (
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="name" className="text-gray-700">お名前</Label>
+              <Label htmlFor="name" className="text-gray-700">
+                お名前
+              </Label>
               <Input
                 id="name"
                 placeholder="ここにお名前を入力"
@@ -93,7 +97,7 @@ export default function Component() {
                   お告げを待っています...
                 </>
               ) : (
-                'おみくじを引く'
+                "おみくじを引く"
               )}
             </Button>
           </form>
@@ -107,22 +111,42 @@ export default function Component() {
               </div>
               <div className="space-y-4 text-center">
                 <div>
-                  <h3 className="text-xl font-semibold text-red-800 mb-2">あなたの性格</h3>
-                  <p className="text-gray-700">{result.personality.description}</p>
+                  <h3 className="text-xl font-semibold text-red-800 mb-2">
+                    あなたの性格
+                  </h3>
+                  <p className="text-gray-700">
+                    {result.personality.description}
+                  </p>
                 </div>
                 <div>
-                  <h3 className="text-xl font-semibold text-red-800 mb-2">守護神</h3>
-                  <p className="text-gray-700 font-bold">{result.guardian_deity.name}</p>
-                  <p className="text-gray-700">{result.guardian_deity.description}</p>
+                  <h3 className="text-xl font-semibold text-red-800 mb-2">
+                    守護神
+                  </h3>
+                  <p className="text-gray-700 font-bold">
+                    {result.guardian_deity.name}
+                  </p>
+                  <p className="text-gray-700">
+                    {result.guardian_deity.description}
+                  </p>
                 </div>
                 <div>
-                  <h3 className="text-xl font-semibold text-red-800 mb-2">あなたへの言葉</h3>
+                  <h3 className="text-xl font-semibold text-red-800 mb-2">
+                    あなたへの言葉
+                  </h3>
                   <p className="text-gray-700 italic">{result.quote.text}</p>
                 </div>
                 <div>
-                  <h3 className="text-xl font-semibold text-red-800 mb-2">運命の象徴</h3>
-                  <p className="text-gray-700"><span className="font-bold">色:</span> {result.destiny.color}</p>
-                  <p className="text-gray-700"><span className="font-bold">シンボル:</span> {result.destiny.symbol}</p>
+                  <h3 className="text-xl font-semibold text-red-800 mb-2">
+                    運命の象徴
+                  </h3>
+                  <p className="text-gray-700">
+                    <span className="font-bold">色:</span>{" "}
+                    {result.destiny.color}
+                  </p>
+                  <p className="text-gray-700">
+                    <span className="font-bold">シンボル:</span>{" "}
+                    {result.destiny.symbol}
+                  </p>
                   <p className="text-gray-700">{result.destiny.meaning}</p>
                 </div>
               </div>
@@ -148,5 +172,5 @@ export default function Component() {
         </div>
       )}
     </div>
-  )
+  );
 }
