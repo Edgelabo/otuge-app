@@ -19,16 +19,18 @@ export default function Component() {
     setLoading(true);
     setErrorMessage(""); // エラーメッセージをリセット
 
-    const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
+    const apiKey =
+      import.meta.env.VITE_GEMINI_API_KEY || process.env.GEMINI_API_KEY;
 
     try {
       const response = await fetchGeminiData(name, apiKey);
       setResult(response);
       setShowResult(true);
-
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error: unknown) {
-      setErrorMessage("データの取得に失敗しました。もう一度お試しください。");
+      if (!errorMessage) {
+        setErrorMessage("データの取得に失敗しました。もう一度お試しください。");
+      }
+      console.error("Error fetching data:", error);
     } finally {
       setLoading(false);
     }

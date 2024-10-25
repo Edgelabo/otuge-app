@@ -46,7 +46,6 @@ export const fetchGeminiData = async (userName: string, apiKey: string) => {
       throw new Error("No content available");
     }
   } catch (error) {
-    console.error("Error fetching data:", error);
     throw new Error((error as Error).message || "Unknown error occurred");
   }
 };
