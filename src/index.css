@@ -2,6 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
+/*
+#MEMO デフォルトの設定は一旦コメントアウト 
 :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
@@ -134,4 +136,4 @@ button:focus-visible {
   body {
     @apply bg-background text-foreground;
   }
-}
+} */

@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Loader2 } from "lucide-react";
+import fetchGeminiData from "./api";
 
 type ResultType = {
   personality: {
@@ -29,47 +30,46 @@ export default function Component() {
   const [result, setResult] = useState<ResultType | null>(null);
   const [loading, setLoading] = useState(false);
   const [showResult, setShowResult] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    await new Promise((resolve) => setTimeout(resolve, 3000));
-    setResult({
-      personality: {
-        description: `${name}さん、あなたは生まれながらにリーダーシップを発揮する力を持つ人です。周囲を明るく照らし、困難な状況でも冷静さを保ち、周りの人を鼓舞する存在です。持ち前の明るさと強い意志で、どんな目標も達成できるでしょう。`,
-      },
-      guardian_deity: {
-        name: "天照大神（アマテラスオオミカミ）",
-        description:
-          "あなたの守護神は、太陽神である天照大神です。彼女はあなたに永遠の光と希望を授け、困難な時でも道を照らしてくれるでしょう。彼女はあなたに創造性を育み、周囲に活力を与える力を与えます。",
-      },
-      quote: {
-        text: `${name}さんには、『どんな困難も乗り越えられる、その力はあなたの中に存在する』という言葉がふさわしいでしょう。`,
-      },
-      destiny: {
-        color: "金色",
-        symbol: "太陽",
-        meaning:
-          "あなたは太陽のように周囲を明るく照らし、人々に希望を与える存在です。あなたの輝かしい未来は、常に金色に輝いています。",
-      },
-    });
-    setLoading(false);
-    setShowResult(true);
+    setErrorMessage(""); // エラーメッセージをリセット
+
+    const apiKey = import.meta.env.VITE_GEMINI_API_KEY;
+
+    try {
+      const response = await fetchGeminiData(name, apiKey);
+      setResult(response);
+      setShowResult(true);
+
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    } catch (error: unknown) {
+      setErrorMessage("データの取得に失敗しました。もう一度お試しください。");
+    } finally {
+      setLoading(false);
+    }
   };
 
   const resetForm = () => {
     setName("");
     setResult(null);
     setShowResult(false);
+    setErrorMessage(""); // エラーメッセージもリセット
   };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-red-800 to-red-900">
-      <div className="w-full max-w-md p-8 bg-white rounded-lg shadow-xl">
+      <div className="w-full max-w-md p-8 bg-white rounded-xl shadow-xl">
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-red-800">神社のお告げ</h1>
-          <p className="text-gray-600">あなたの運命をお聞かせします</p>
+          <h1 className="text-3xl font-bold text-red-800">神様からのお告げ</h1>
+          <p className="text-gray-600">あなたに助言をお伝えします</p>
         </div>
+
+        {errorMessage && (
+          <div className="text-center text-red-600 mb-4">{errorMessage}</div>
+        )}
 
         {!showResult ? (
           <form onSubmit={handleSubmit} className="space-y-4">
@@ -151,17 +151,17 @@ export default function Component() {
                 </div>
               </div>
               <div className="mt-4 text-center text-sm text-gray-600">
-                良い一年になりますように
+                良い人生になりますように
               </div>
               <div className="mt-4 text-center text-xs text-gray-500">
-                神様の神社
+                AI神社
               </div>
             </div>
             <Button
               onClick={resetForm}
               className="w-full bg-red-800 hover:bg-red-700 text-white mt-4"
             >
-              別のおみくじを引く
+              別のお告げを聞く
             </Button>
           </div>
         ) : null}
