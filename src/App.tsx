@@ -2,28 +2,10 @@
 
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Loader2 } from "lucide-react";
+import FormComponent from "./components/Form";
+import LoadingOverlay from "./components/LoadingOverlay";
 import fetchGeminiData from "./api";
-
-type ResultType = {
-  personality: {
-    description: string;
-  };
-  guardian_deity: {
-    name: string;
-    description: string;
-  };
-  quote: {
-    text: string;
-  };
-  destiny: {
-    color: string;
-    symbol: string;
-    meaning: string;
-  };
-};
+import { ResultType } from "@/types/ResultType";
 
 export default function Component() {
   const [name, setName] = useState("");
@@ -61,7 +43,7 @@ export default function Component() {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-red-800 to-red-900">
-      <div className="w-full max-w-md p-8 bg-white rounded-xl shadow-xl">
+      <div className="w-full max-w-md p-8 bg-white rounded-xl shadow-xl mt-20 mb-20">
         <div className="text-center mb-8">
           <h1 className="text-3xl font-bold text-red-800">神様からのお告げ</h1>
           <p className="text-gray-600">あなたに助言をお伝えします</p>
@@ -72,35 +54,13 @@ export default function Component() {
         )}
 
         {!showResult ? (
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div className="space-y-2">
-              <Label htmlFor="name" className="text-gray-700">
-                お名前
-              </Label>
-              <Input
-                id="name"
-                placeholder="ここにお名前を入力"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                required
-                className="border-red-300 focus:border-red-500 focus:ring-red-500"
-              />
-            </div>
-            <Button
-              type="submit"
-              className="w-full bg-red-800 hover:bg-red-700 text-white"
-              disabled={loading}
-            >
-              {loading ? (
-                <>
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  お告げを待っています...
-                </>
-              ) : (
-                "おみくじを引く"
-              )}
-            </Button>
-          </form>
+          <FormComponent
+            name={name}
+            setName={setName}
+            handleSubmit={handleSubmit}
+            loading={loading}
+            errorMessage={errorMessage}
+          />
         ) : result ? (
           <div className="space-y-4">
             <div className="border-4 border-red-800 p-4 rounded-lg">
@@ -166,11 +126,8 @@ export default function Component() {
           </div>
         ) : null}
       </div>
-      {loading && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-          <div className="cloud-animation"></div>
-        </div>
-      )}
+      {/* ローディング中はローディングオーバーレイを表示 */}
+      {loading && <LoadingOverlay />}
     </div>
   );
 }
